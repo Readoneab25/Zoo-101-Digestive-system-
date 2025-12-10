@@ -1,0 +1,278 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phy 101 Interactive Quiz</title>
+  <style>
+    :root{--bg:#0f172a;--card:#111827;--accent:#06b6d4;--muted:#94a3b8;--white:#e6eef6}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:linear-gradient(180deg,#071022 0%, #071a2a 100%);color:var(--white);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:920px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;gap:16px}
+    h1{margin:0;font-size:20px}
+    .meta{color:var(--muted);font-size:13px}
+    .card{background:rgba(255,255,255,0.03);padding:20px;border-radius:12px;margin-top:18px;box-shadow:0 6px 24px rgba(2,6,23,0.6)}
+    .question{font-size:18px;margin-bottom:12px}
+    .choices{display:flex;flex-direction:column;gap:8px}
+    .choice{background:#072031;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+    .choice:hover{transform:translateY(-2px)}
+    .choice.selected{outline:3px solid rgba(6,182,212,0.12);background:#2babff}
+    .controls{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+    button{background:var(--accent);color:#042029;border:0;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--white)}
+    .progress{height:10px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#60a5fa);width:0%}
+    .footer{margin-top:16px;color:var(--muted);font-size:13px}
+    .result{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(2,6,23,0.85), rgba(2,6,23,0.6));}
+    .review{margin-top:12px}
+    .q-review{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;margin-bottom:10px}
+    @media(max-width:560px){.wrap{padding:12px}h1{font-size:18px}.question{font-size:16px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>ZOO 101 Digestive system Interactive MCQ Quiz</h1>
+        <div class="meta">63 multiple-choice questions </div>
+      </div>
+    </header><div class="card" id="quiz-card">
+  <div class="progress" aria-hidden><i id="progress-bar"></i></div>
+  <div style="height:14px"></div>
+  <div id="q-area">
+    </div>
+
+  <div class="controls">
+    <div style="display:flex;gap:8px">
+      <button id="prevBtn" class="secondary">Previous</button>
+      <button id="nextBtn">Next</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button id="submitBtn" class="secondary">Submit</button>
+      <div style="color:var(--muted);font-size:13px">Q <span id="q-num">1</span> / <span id="q-total">10</span></div>
+    </div>
+  </div>
+
+  <div class="footer">Tip: Select an answer and press Next. You can review answers after submission.</div>
+</div>
+
+<div id="result-area" style="display:none" class="card">
+  <div class="result">
+    <h2 id="score-title"></h2>
+    <p id="score-summary" class="meta"></p>
+  </div>
+  <div class="review" id="review-list"></div>
+  <div style="display:flex;gap:8px;margin-top:12px">
+    <button id="retryBtn">Retake Quiz</button>
+    <button id="exportBtn" class="secondary">Export Results</button>
+  </div>
+</div>
+<br><br><br>
+  <a href="https://wa.me/+2349036795652"><button>Contact The Developer</button></a>
+    <a href="https://wa.me/+2349036795652"><button>Support Project</button></a><br><br>
+   <button onclick="shareOnWhatsApp()">Share Quiz link via WhatsApp</button>
+  <h2>Designed by Readone</h2>
+  </div>
+  
+
+    
+         
+  <script>
+    function shareOnWhatsApp() {
+        const message = "https://https://readoneab25.github.io/Bio-101-ecology-cell/";
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = "whatsapp://send?text=" + encodedMessage;
+        window.open(whatsappUrl, '_blank');
+    }
+    
+    
+    const QUESTIONS = [
+    // --- TOPIC 1: Components, Overview, and Basic Processes ---
+    { q: "The two main components of the Digestive System are the Gastrointestinal (G.I.) Tract and the:", c: ["Endocrine Glands", "Excretory System", "Accessory Structures and Organs", "Central Nervous System"], a: 2 },
+    { q: "The G.I. Tract is also called the alimentary ('nourishment') canal and consists of long muscular tube starting from the oral cavity and ending at the:", c: ["Pharynx", "Trachea", "Anus", "Larynx"], a: 2 },
+    { q: "Which organ listed is part of the G.I. Tract, not an Accessory Structure?", c: ["Gallbladder", "Pancreas", "Esophagus", "Liver"], a: 2 },
+    { q: "Food is propelled along the length of the G.I. tract by rhythmic movements provided by muscular layers called:", c: ["Osmosis", "Peristaltic movements", "Pyloric contractions", "Churning"], a: 1 },
+    { q: "The primary purpose of the gastrointestinal tract is to break down large nutrients (polymers) into smaller units called:", c: ["Isotopes", "Enzymes", "Monocytes", "Monomers"], a: 3 },
+    { q: "What is the process that involves the Enzymatic breakdown of food (from complex to simple building blocks)?", c: ["Mechanical Digestion", "Catabolism", "Chemical Digestion", "Defecation"], a: 2 },
+    { q: "The transportation of digested products from the lumen of the G.I. tract across an epithelial lining into the blood and lymph vessels is called:", c: ["Ingestion", "Defecation", "Propulsion", "Absorption"], a: 3 },
+    { q: "The six basic digestive processes are Ingestion, Propulsion, Mechanical Digestion, Chemical Digestion, Absorption, and:", c: ["Respiration", "Catabolism", "Defecation", "Secretion"], a: 2 },
+    { q: "Which process involves the movement through the alimentary canal, including swallowing and peristalsis?", c: ["Ingestion", "Propulsion", "Mechanical Digestion", "Absorption"], a: 1 },
+    { q: "Where does mechanical digestion primarily occur?", c: ["Only in the small intestine", "Mouth and Stomach", "Pharynx and Esophagus", "Stomach and Large Intestine"], a: 1 },
+    { q: "The final step of digestion is **Absorption**, where digested products are transported across the epithelial lining into the blood and:", c: ["Nerves", "Connective tissue", "Lymph vessels", "Muscle tissue"], a: 2 },
+    { q: "What assists the G.I. tract by secreting enzymes or substances to help transform, digest, absorb or transport food?", c: ["The muscularis mucosae", "The accessory structures", "The submucosal plexus", "The peritoneum"], a: 1 },
+    { q: "The mass movement and elimination of feces is the final step described as:", c: ["Absorption", "Chemical digestion", "Defecation", "Ingestion"], a: 2 },
+    
+    // --- TOPIC 2: Oral Cavity, Teeth, and Salivary Glands ---
+    { q: "The mouth is the hollow space formed by the area between the lips, cheeks, tongue, hard/soft palates and the:", c: ["Larynx", "Esophagus", "Pharynx (throat)", "Nasal cavity"], a: 2 },
+    { q: "The V-shaped furrow that separates the body of the tongue from the base is called the:", c: ["Median sulcus", "Papillae", "Terminal sulcus", "Uvula"], a: 2 },
+    { q: "What structures on the tongue contain chemoreceptors called taste buds and help grip food?", c: ["Buccinators", "Papillae", "Rugae", "Villi"], a: 1 },
+    { q: "The anterior end of the roof of the mouth is the **hard palate**, formed by the inferior surface of the maxillae and what other bones?", c: ["Mandible", "Zygomaticus", "Palatine bones", "Temporal bones"], a: 2 },
+    { q: "The primary function of teeth is **mastication**, which converts food into tiny pieces, also known as:", c: ["Deglutition", "Insalivation", "Absorption", "Chewing"], a: 3 },
+    { q: "The exterior surface of the tooth root is covered in a bone-like mixture called:", c: ["Dentin", "Pulp", "Cementum", "Enamel"], a: 2 },
+    { q: "How many permanent adult teeth typically form and erupt?", c: ["20", "28", "32", "36"], a: 2 },
+    { q: "Which class of adult teeth are chisel-shaped and found in the front of the mouth?", c: ["Canines", "Premolars", "Incisors", "Molars"], a: 2 },
+    { q: "Saliva contains an antibacterial agent called:", c: ["Lysozyme", "Pepsin", "Bile", "Mucin"], a: 0 },
+    { q: "Which extrinsic salivary gland produces approximately 25% of saliva and is located anteriorly/inferiorly to the ear?", c: ["Sublingual gland", "Submandibular gland", "Parotid gland", "Intrinsic glands"], a: 2 },
+    { q: "The Submandibular gland secretes 70% of the saliva and produces a secretion rich in mucin, which acts as a:", c: ["Enzyme", "Acid", "Lubricant", "Antimicrobial"], a: 2 },
+    { q: "The inner surface of the lips and cheeks is covered by which type of epithelium?", c: ["Simple columnar", "Keratinized stratified squamous", "Simple cuboidal", "Non-keratinized stratified squamous"], a: 3 },
+    { q: "Which muscle of the cheeks assists in the movement of the lips and cheeks, mentioned in the notes?", c: ["Masseter", "Temporalis", "Pterygoid", "Buccinator"], a: 3 },
+    { q: "The soft palate and hard palate work together to separate the mouth from the:", c: ["Pharynx", "Nasal cavity", "Esophagus", "Stomach"], a: 1 },
+    
+    // --- TOPIC 3: G.I. Tract Layers, Pharynx, and Esophagus ---
+    { q: "The esophagus extends from the pharynx to the stomach, going through an opening in the diaphragm called the:", c: ["Pyloric sphincter", "Esophageal hiatus", "Cardial orifice", "Lower esophageal sphincter"], a: 1 },
+    { q: "Just proximal to the gastro-esophageal junction is the lower esophageal sphincter, also known as the:", c: ["Pyloric sphincter", "Myenteric sphincter", "Cardiac sphincter", "Upper sphincter"], a: 2 },
+    { q: "The muscular wall of the esophagus is skeletal muscle in the proximal $1/3$, and a mix of skeletal and smooth muscle in the:", c: ["Distal 1/3", "Middle 1/3", "Entire tube", "Upper esophageal sphincter"], a: 1 },
+    { q: "The innermost layer of the digestive tract that is in direct contact with ingested nutrients is the:", c: ["Tela Submucosa", "Tunica Muscularis Externa", "Tunica Serosa", "Tunica Mucosa"], a: 3 },
+    { q: "The thin strip of smooth muscle that makes up the lower boundary of the Tunica Mucosa is the:", c: ["Tunica Muscularis Externa", "Muscularis mucosae", "Tela Submucosa", "Lamina propria"], a: 1 },
+    { q: "The **lamina propria** is the underlying areolar connective tissue component of the Tunica Mucosa that contains blood vessels, nerves, and:", c: ["Chief cells", "Adipose tissue", "Lymphoid tissue", "Oblique muscle"], a: 2 },
+    { q: "The Myenteric Plexus gives neural innervation and controls the contraction of the muscles, controlling the mechanical breakdown and what process?", c: ["Absorption", "Defecation", "Peristalsis", "Ingestion"], a: 2 },
+    { q: "The outermost layer is the **Tunica Serosa** if the region of the tract is inside the peritoneal cavity, or the **Tunica Adventitia** if it is:", c: ["In the stomach", "Outside the peritoneal cavity", "In the lumen", "In the submucosa"], a: 1 },
+
+    // --- TOPIC 4: Stomach Anatomy and Function ---
+    { q: "The two borders of the stomach are called the lesser and:", c: ["Pyloric curvature", "Cardial curvature", "Fundus", "Greater curvature"], a: 3 },
+    { q: "The region of the stomach where most gastric glands are located and where most mixing of the food occurs is the:", c: ["Cardia", "Pylorus", "Fundus", "Body"], a: 3 },
+    { q: "The curved base of the stomach that expels contents into the duodenum via the pyloric sphincter is the:", c: ["Fundus", "Body", "Cardia", "Pylorus"], a: 3 },
+    { q: "What is the semi-liquid material produced by the stomach's mixing and churning activity?", c: ["Feces", "Bolus", "Bile", "Chyme"], a: 3 },
+    { q: "The stomach is the only region of the entire tract that has **three** muscle layers in the tunica muscularis externa, including the usual circular and longitudinal layers, plus an inner:", c: ["Stratified layer", "Oblique layer", "Muscularis mucosae", "Serous layer"], a: 1 },
+    { q: "The **Parietal cells** in the gastric glands are responsible for making:", c: ["Pepsinogen", "Mucin", "Hydrochloric acid (HCl)", "Amylase"], a: 2 },
+    { q: "The **Chief cells** in the gastric glands make Pepsinogen, which is cleaved to **pepsin** by HCl to digest:", c: ["Carbohydrates", "Fats", "Proteins", "Nucleic Acids"], a: 2 },
+    { q: "The start of enzymatic digestion of which nutrient occurs in the stomach?", c: ["Carbohydrates", "Fats", "Nucleic acids", "Proteins"], a: 3 },
+    { q: "What is the typical acidic pH of the chyme storage in the stomach?", c: ["pH 1", "pH 2", "pH 4", "pH 7"], a: 1 },
+    
+    // --- TOPIC 5: Small and Large Intestines ---
+    { q: "Where does chemical (enzymatic) digestion become significant for *all* nutrients (proteins, fats, and carbohydrates)?", c: ["Mouth", "Stomach", "Small Intestine", "Large Intestine"], a: 2 },
+    { q: "The $20$ or so feet of small intestine extend from the pyloric sphincter of the stomach to the:", c: ["Duodenojejunal flexure", "Ileocecal valve", "Greater duodenal papilla", "Anus"], a: 1 },
+    { q: "Which region of the small intestine is about 10 inches long and curves around the head of the pancreas?", c: ["Jejunum", "Ileum", "Cecum", "Duodenum"], a: 3 },
+    { q: "The final and longest segment of the small intestine is the ileum, which empties into the cecum at the:", c: ["Pyloric sphincter", "Greater duodenal papilla", "Duodenojejunal flexure", "Ileocecal junction"], a: 3 },
+    { q: "The lining of the small intestine is made up of numerous folds called:", c: ["Rugae", "Taenia coli", "Plicae circulares", "Haustra"], a: 2 },
+    { q: "The wall of the colon is made up of several pouches called **haustra** that are held under tension by:", c: ["The mesocolon", "Three thick bands of muscle (taenia coli)", "The Tunica Serosa", "The Myenteric Plexus"], a: 1 },
+    { q: "The large intestine plays a key role in the reabsorption of excess water and:", c: ["Enzymes", "Bile salts", "Electrolytes", "Fats"], a: 2 },
+    { q: "The final 15cm of the large intestine that expands to hold fecal matter before it passes through the anorectal canal is the:", c: ["Cecum", "Sigmoid colon", "Transverse colon", "Rectum"], a: 3 },
+    { q: "The numerous **goblet cells** that line the deep intestinal glands of the large intestine secrete what to lubricate fecal matter?", c: ["Lipase", "Bile", "Mucous", "Amylase"], a: 2 },
+
+    // --- TOPIC 6: Accessory Structures - Liver, Gallbladder, Pancreas ---
+    { q: "The liver's main role in digestion is the production of:", c: ["Hydrochloric acid", "Pepsinogen", "Bile", "Insulin"], a: 2 },
+    { q: "What is the function of bile salts in the duodenum?", c: ["Chemical digestion of proteins", "Emulsification of ingested fats", "Absorption of water", "Neutralizing stomach acid"], a: 1 },
+    { q: "The organ that *stores and concentrates* bile, but does not make it, is the:", c: ["Liver", "Pancreas", "Gallbladder", "Spleen"], a: 2 },
+    { q: "The pancreas delivers its digestive enzymes, called pancreatic juices, to the duodenum at the:", c: ["Pyloric sphincter", "Lower esophageal sphincter", "Ileocecal valve", "Greater duodenal papilla"], a: 3 },
+    { q: "Which type of pancreatic enzyme is responsible for the digestion of lipids?", c: ["Amylases", "Nucleases", "Proteases", "Lipases"], a: 3 },
+    { q: "What is the key role of the liver's **Kupffer cells**?", c: ["Producing bile", "Detoxifying metabolites", "Acting as resident macrophages (filters)", "Synthesizing albumin"], a: 2 },
+    { q: "The endocrine function of the pancreas involves the production of hormones which occurs in the:", c: ["Acini", "Acini of Langerhans", "Islets of Langerhans", "Pancreatic duct"], a: 2 },
+    { q: "The bulk of the pancreas (80-85%) is the exocrine portion, made up of numerous rounded acinar glands called:", c: ["Islets of Langerhans", "Lobules", "Acini", "Ducts"], a: 2 },
+    { q: "The pancreatic enzyme **nucleases** is responsible for the digestion of:", c: ["Carbohydrates", "Lipids", "Proteins", "Nucleic acids (GTP and DNA)"], a: 3 },
+    { q: "Pancreatic enzymes are secreted in an **inactive form** to prevent:", c: ["Digestion of the duodenum", "Digestion of the pancreas itself", "Enzyme deactivation by stomach acid", "Hormone secretion"], a: 1 }
+];
+
+    
+    
+    let state = { idx:0, answers: Array(QUESTIONS.length).fill(null) };
+const total = QUESTIONS.length;
+
+function renderQuestion(){
+  const area = document.getElementById('q-area');
+  const q = QUESTIONS[state.idx];
+  document.getElementById('q-num').textContent = state.idx+1;
+  document.getElementById('q-total').textContent = total;
+  const progress = Math.round((state.idx/total)*100);
+  document.getElementById('progress-bar').style.width = progress + '%';
+
+  area.innerHTML = '';
+  const qEl = document.createElement('div');
+  qEl.innerHTML = `<div class="question">${state.idx+1}. ${q.q}</div>`;
+  const choices = document.createElement('div'); choices.className='choices';
+  q.c.forEach((choice, i)=>{
+    const btn = document.createElement('div');
+    btn.className='choice'; btn.tabIndex=0; btn.textContent = String.fromCharCode(65+i)+'. '+choice;
+    if(state.answers[state.idx]===i) btn.classList.add('selected');
+    btn.addEventListener('click', ()=>{
+      // select
+      state.answers[state.idx]=i;
+      document.querySelectorAll('.choice').forEach(el=>el.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+    choices.appendChild(btn);
+  });
+  qEl.appendChild(choices);
+  area.appendChild(qEl);
+}
+
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  if(state.idx < total-1) state.idx++;
+  renderQuestion();
+});
+
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+  if(state.idx > 0) state.idx--;
+  renderQuestion();
+});
+
+document.getElementById('submitBtn').addEventListener('click', ()=>{
+  // confirm and grade
+  const unanswered = state.answers.filter(a=>a===null).length;
+  if(unanswered>0){
+    if(!confirm(`You have ${unanswered} unanswered questions. Submit anyway?`)) return;
+  }
+  gradeQuiz();
+});
+
+function gradeQuiz(){
+  let correct=0;
+  const review = [];
+  for(let i=0;i<total;i++){
+    const user = state.answers[i];
+    const correctIdx = QUESTIONS[i].a;
+    const ok = user===correctIdx;
+    if(ok) correct++;
+    review.push({i, q:QUESTIONS[i].q, choices:QUESTIONS[i].c, user, correctIdx, ok});
+  }
+  showResult(correct, review);
+}
+
+function showResult(score, review){
+  document.getElementById('quiz-card').style.display='none';
+  const area = document.getElementById('result-area');
+  area.style.display='block';
+  const title = document.getElementById('score-title');
+  title.textContent = `You scored ${score} out of ${total}`;
+  const pct = Math.round((score/total)*100);
+  document.getElementById('score-summary').textContent = `Percentage: ${pct}%`;
+
+  const list = document.getElementById('review-list'); list.innerHTML='';
+  review.forEach(item=>{
+    const div = document.createElement('div'); div.className='q-review';
+    const head = document.createElement('div'); head.style.fontWeight='700'; head.textContent = `${item.i+1}. ${item.q}`;
+    const userAns = document.createElement('div'); userAns.style.marginTop='6px';
+    const ua = item.user===null? 'No answer' : String.fromCharCode(65+item.user)+'. '+item.choices[item.user];
+    const ca = String.fromCharCode(65+item.correctIdx)+'. '+item.choices[item.correctIdx];
+    userAns.innerHTML = `<div><strong>Your answer:</strong> ${ua}</div><div style="margin-top:4px"><strong>Correct answer:</strong> ${ca}</div>`;
+    if(item.ok) userAns.style.color='lightgreen'; else userAns.style.color='#fca5a5';
+    div.appendChild(head); div.appendChild(userAns);
+    list.appendChild(div);
+  });
+}
+
+document.getElementById('retryBtn').addEventListener('click', ()=>{
+  // reset
+  state = { idx:0, answers: Array(total).fill(null) };
+  document.getElementById('result-area').style.display='none';
+  document.getElementById('quiz-card').style.display='block';
+  renderQuestion();
+});
+
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const data = {answers: state.answers, questions: QUESTIONS};
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'cos101_module1-2_results.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+
+// init
+renderQuestion();
+</script>
+
+
+</body>
+</html>
